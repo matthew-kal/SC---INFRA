@@ -1,9 +1,0 @@
-# Ignore Terraform state and lock files
-*.tfstate
-*.tfstate.*
-.terraform.lock.hcl
-.terraform/
-
-# Ignore Terraform plan files
-*.tfplan
-cloud-sql-proxy
