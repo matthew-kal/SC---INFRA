@@ -9,7 +9,7 @@ resource "google_cloud_scheduler_job" "daily_user_refresh" {
   attempt_deadline = "320s"
 
   http_target {
-    uri = "${google_cloud_run_v2_service.django_api.uri}/api/users/tasks/refresh-all-user-data/"
+    uri = "${google_cloud_run_v2_service.django_api.uri}/users/tasks/refresh-all-user-data/"
     http_method = "POST"
     
     headers = {

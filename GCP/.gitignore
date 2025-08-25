@@ -6,3 +6,4 @@
 
 # Ignore Terraform plan files
 *.tfplan
+cloud-sql-proxy

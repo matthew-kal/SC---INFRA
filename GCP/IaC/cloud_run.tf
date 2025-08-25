@@ -124,6 +124,10 @@ resource "google_cloud_run_v2_service" "django_api" {
         }
       }
       env {
+        name  = "DATABASE_PORT"
+        value = "3306"
+      }
+      env {
         name  = "STORAGE_BUCKET_NAME"
         value = google_storage_bucket.media_bucket.name
       }
