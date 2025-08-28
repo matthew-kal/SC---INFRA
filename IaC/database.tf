@@ -14,8 +14,8 @@ resource "google_sql_database_instance" "main_db" {
   deletion_protection = true 
 
   settings {
-    tier = "db-n1-standard-1"
-
+    tier              = "db-f1-micro" 
+    
     ip_configuration {
       ipv4_enabled    = true
       private_network = google_compute_network.main_vpc.id

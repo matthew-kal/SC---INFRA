@@ -51,6 +51,12 @@ resource "google_storage_bucket_iam_member" "gcs_admin" {
   member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
+resource "google_project_iam_member" "token_creator" {
+  project = var.gcp_project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
 resource "google_cloud_run_v2_service" "django_api" {
   project  = var.gcp_project_id
   name     = "surgicalm-api"
@@ -91,7 +97,7 @@ resource "google_cloud_run_v2_service" "django_api" {
       }
       env {
         name  = "BASE_URL"
-        value = "https://surgicalm-api-${random_string.service_url_suffix.result}.${var.gcp_region}.run.app"
+        value = "https://api.surgicalm.com"
       }
       env {
         name = "SECRET_KEY"
@@ -126,6 +132,10 @@ resource "google_cloud_run_v2_service" "django_api" {
       env {
         name  = "STORAGE_BUCKET_NAME"
         value = google_storage_bucket.media_bucket.name
+      }
+      env {
+        name  = "DATABASE_PORT"
+        value = 3306
       }
       env {
         name = "CRON_SECRET_KEY"
