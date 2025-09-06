@@ -57,6 +57,13 @@ resource "google_project_iam_member" "token_creator" {
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
+# Allow the service account to impersonate itself for signed URL generation
+resource "google_service_account_iam_member" "self_impersonation" {
+  service_account_id = google_service_account.cloud_run_sa.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
 resource "google_cloud_run_v2_service" "django_api" {
   project  = var.gcp_project_id
   name     = "surgicalm-api"
@@ -171,6 +178,10 @@ resource "google_cloud_run_v2_service" "django_api" {
       env {
         name  = "DEFAULT_FROM_EMAIL"
         value = "admin@surgicalm.com"
+      }
+      env {
+        name  = "SERVICE_ACCOUNT_EMAIL"
+        value = google_service_account.cloud_run_sa.email
       }
     }
   }
