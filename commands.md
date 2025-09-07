@@ -8,11 +8,11 @@ terraform init
 # Shows you which resources will be created, updated, or destroyed without actually making any changes.
 terraform plan
 
-### Google Cloud Commands ###
-
 # Executes the actions determined by the plan.
 # This command actually creates, updates, or deletes your cloud resources.
 terraform apply
+
+### Google Cloud Commands ###
 
 # Connects a local port to the Cloud SQL Prod DB 
 # Needs the cloud-sql-proxy executeable 
