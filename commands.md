@@ -25,3 +25,6 @@ gcloud auth login
 # Logs in and creates credentials for applications.
 # Crucial for authenticating tools like Terraform. Use this to fix "invalid_grant" errors.
 gcloud auth application-default login
+
+# View a secret in the secrets manager
+gcloud secrets versions describe latest --secret "<secret>"

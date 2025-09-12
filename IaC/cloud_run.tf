@@ -57,6 +57,12 @@ resource "google_project_iam_member" "token_creator" {
   member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
 }
 
+resource "google_project_iam_member" "run_invoker" {
+  project = var.gcp_project_id
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
+
 # Allow the service account to impersonate itself for signed URL generation
 resource "google_service_account_iam_member" "self_impersonation" {
   service_account_id = google_service_account.cloud_run_sa.name
@@ -144,15 +150,7 @@ resource "google_cloud_run_v2_service" "django_api" {
         name  = "DATABASE_PORT"
         value = 3306
       }
-      env {
-        name = "CRON_SECRET_KEY"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.cron_secret_key.secret_id
-            version = "latest"
-          }
-        }
-      }
+
       env {
         name = "DEV_KEY"
         value_source {
@@ -182,6 +180,10 @@ resource "google_cloud_run_v2_service" "django_api" {
       env {
         name  = "SERVICE_ACCOUNT_EMAIL"
         value = google_service_account.cloud_run_sa.email
+      }
+      env {
+        name  = "CLOUD_RUN_URL"
+        value = "https://surgicalm-api-dmfxcqlzba-uk.a.run.app"
       }
     }
   }

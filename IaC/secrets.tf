@@ -1,10 +1,5 @@
 # Secret Env Variables
 
-resource "random_string" "cron_secret" {
-  length  = 48
-  special = false
-}
-
 resource "random_string" "dev_key_value" {
   length  = 48
   special = false
@@ -29,19 +24,6 @@ resource "google_secret_manager_secret" "db_password" {
 resource "google_secret_manager_secret_version" "db_password_v1" {
   secret      = google_secret_manager_secret.db_password.id
   secret_data = random_password.db_password.result
-}
-
-resource "google_secret_manager_secret" "cron_secret_key" {
-  project   = var.gcp_project_id
-  secret_id = "cron-secret-key"
-  replication {
-    auto {}
-  }
-}
-
-resource "google_secret_manager_secret_version" "cron_secret_key_v1" {
-  secret      = google_secret_manager_secret.cron_secret_key.id
-  secret_data = random_string.cron_secret.result
 }
 
 resource "google_secret_manager_secret" "dev_key" {
